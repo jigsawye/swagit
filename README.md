@@ -22,7 +22,7 @@ swagit
 sg
 ```
 
-![Imgur](https://i.imgur.com/lZE5CG1.gif)
+<img src="https://i.imgur.com/lZE5CG1.gif" width="500">
 
 ### Options
 
@@ -30,7 +30,7 @@ sg
 
 Open a interactive to select branches which will be delete.
 
-![Imgur](https://i.imgur.com/8Vk1yqS.gif)
+<img src="https://i.imgur.com/8Vk1yqS.gif" width="800">
 
 ## License
 
