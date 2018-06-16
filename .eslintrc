@@ -1,0 +1,10 @@
+{
+  "extends": ["yoctol-base"],
+  "plugins": ["prettier"],
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "no-console": "off"
+  }
+}
