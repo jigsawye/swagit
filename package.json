@@ -11,8 +11,8 @@
   },
   "version": "0.1.0",
   "bin": {
-    "sg": "./bin/swagit",
-    "swagit": "./bin/swagit"
+    "sg": "./bin/swagit.js",
+    "swagit": "./bin/swagit.js"
   },
   "files": [
     "bin",
