@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/jigsawye/swagit/issues"
   },
-  "version": "0.0.0",
+  "version": "0.1.0",
   "bin": {
     "sg": "./bin/swagit",
     "swagit": "./bin/swagit"
