@@ -1,5 +1,7 @@
 # Swagit
 
+![Swagit](https://i.imgur.com/QBNMDxU.png)
+
 ## Usage
 
 Firstly, install the package from [npm](https://npmjs.com/release):
