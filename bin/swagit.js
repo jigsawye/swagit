@@ -20,6 +20,14 @@ if (nodeVersion.major < 6) {
   process.exit(1);
 }
 
+process.stdin.setEncoding('utf8');
+process.stdin.on('data', chunk => {
+  if (chunk === '\u001b') {
+    // ESC
+    process.exit(0);
+  }
+});
+
 args.option('d', 'Select branches which you want to delete');
 
 const flags = args.parse(process.argv);
