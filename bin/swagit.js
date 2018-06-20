@@ -2,9 +2,11 @@
 
 const args = require('args');
 const inquirer = require('inquirer');
-const { yellow, magenta } = require('chalk');
+const { yellow, magenta, bgRed } = require('chalk');
 const nodeVersion = require('node-version');
+const checkForUpdate = require('update-check');
 
+const pkg = require('../package');
 const { info, success, error } = require('../lib/message-prefix');
 const {
   checkGit,
@@ -90,6 +92,16 @@ const startDeleteBranches = async () => {
 };
 
 const main = async () => {
+  const update = await checkForUpdate(pkg);
+
+  if (update) {
+    console.log(
+      `${bgRed('UPDATE AVAILABLE')} The latest version of \`release\` is ${
+        update.latest
+      }`
+    );
+  }
+
   const currentBranch = await checkGit();
 
   if (!currentBranch) {
