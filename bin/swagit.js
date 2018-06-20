@@ -32,15 +32,13 @@ args.option('d', 'Select branches which you want to delete');
 
 const flags = args.parse(process.argv);
 
-const startCheckout = async () => {
-  const choices = await getBranches();
-
+const startCheckout = async branches => {
   const { branch } = await inquirer.prompt([
     {
       type: 'list',
       name: 'branch',
       message: 'Which branch do you want to checkout?',
-      choices,
+      choices: branches,
     },
   ]);
 
@@ -49,34 +47,32 @@ const startCheckout = async () => {
   console.log(`${success} Checkout current branch to ${magenta(branch)}`);
 };
 
-const startDeleteBranches = async () => {
-  const choices = await getBranches();
-
-  const { branches } = await inquirer.prompt([
+const startDeleteBranches = async branches => {
+  const { branches: selectedBranches } = await inquirer.prompt([
     {
       type: 'checkbox',
       name: 'branches',
       message: 'Which branches do you want to delete?',
-      choices,
+      choices: branches,
     },
   ]);
 
-  if (branches.length === 0) {
+  if (selectedBranches.length === 0) {
     console.log('No branch selected, exit.');
     process.exit(1);
   }
 
   const messageSuffix =
-    branches.length === 1
+    selectedBranches.length === 1
       ? 'this branch?'
-      : `those ${yellow.bold(branches.length)} branches?`;
+      : `those ${yellow.bold(selectedBranches.length)} branches?`;
 
   const { confirm } = await inquirer.prompt([
     {
       type: 'confirm',
       name: 'confirm',
       message: `Are you want to ${yellow.bold('DELETE')} ${messageSuffix}
-  ${branches.join(', ')}`,
+  ${selectedBranches.join(', ')}`,
     },
   ]);
 
@@ -101,10 +97,17 @@ const main = async () => {
 
   console.log(`${info} Current branch is ${magenta(currentBranch)}`);
 
+  const branches = await getBranches();
+
+  if (branches.length === 0) {
+    console.error(`${error} No other branches in the repository`);
+    process.exit(1);
+  }
+
   if (flags.d) {
-    await startDeleteBranches();
+    await startDeleteBranches(branches);
   } else {
-    await startCheckout();
+    await startCheckout(branches);
   }
 };
 
