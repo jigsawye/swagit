@@ -68,10 +68,12 @@ const startDeleteBranches = async branches => {
   ]);
 
   if (confirm) {
-    deleteBranches(branches);
+    deleteBranches(selectedBranches);
 
     console.log(
-      `${success} ${magenta(branches.length)} branches has been deleted.`
+      `${success} ${magenta(
+        selectedBranches.length
+      )} branches has been deleted.`
     );
   }
 };
