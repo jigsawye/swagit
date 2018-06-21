@@ -1,5 +1,3 @@
-# Swagit
-
 ![Swagit](https://i.imgur.com/kYSEMFD.png)
 
 [![Build Status](https://travis-ci.com/jigsawye/swagit.svg?branch=master)](https://travis-ci.com/jigsawye/swagit)
