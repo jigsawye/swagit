@@ -1,6 +1,8 @@
 # Swagit
 
-![Swagit](https://i.imgur.com/QBNMDxU.png)
+![Swagit](https://i.imgur.com/kYSEMFD.png)
+
+[![Build Status](https://travis-ci.com/jigsawye/swagit.svg?branch=master)](https://travis-ci.com/jigsawye/swagit)
 
 ## Usage
 
@@ -36,4 +38,5 @@ Open a interactive to select branches which will be delete.
 
 ## License
 
-MIT © [jigsawye](https://jigsawye.com)
+MIT © [Evan Ye](https://github.com/jigsawye)
+
