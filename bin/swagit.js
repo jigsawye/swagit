@@ -2,11 +2,11 @@
 
 const args = require('args');
 const inquirer = require('inquirer');
-const { yellow, magenta, bgRed } = require('chalk');
-const nodeVersion = require('node-version');
-const checkForUpdate = require('update-check');
+const { yellow, magenta } = require('chalk');
 
-const pkg = require('../package');
+const checkUpdate = require('../lib/check-update');
+const checkNodeVersion = require('../lib/check-node-version');
+const handleEsc = require('../lib/handle-esc');
 const { info, success, error } = require('../lib/message-prefix');
 const {
   checkGit,
@@ -15,20 +15,9 @@ const {
   checkout,
 } = require('../lib/git');
 
-if (nodeVersion.major < 6) {
-  console.error(
-    `${error} Now requires at least version 6 of Node. Please upgrade!`
-  );
-  process.exit(1);
-}
+checkNodeVersion();
 
-process.stdin.setEncoding('utf8');
-process.stdin.on('data', chunk => {
-  if (chunk === '\u001b') {
-    // ESC
-    process.exit(0);
-  }
-});
+handleEsc();
 
 args.option('d', 'Select branches which you want to delete');
 
@@ -87,17 +76,7 @@ const startDeleteBranches = async branches => {
   }
 };
 
-const main = async () => {
-  const update = await checkForUpdate(pkg);
-
-  if (update) {
-    console.log(
-      `${bgRed('UPDATE AVAILABLE')} The latest version of \`release\` is ${
-        update.latest
-      }`
-    );
-  }
-
+const checkGitRepository = async () => {
   const currentBranch = await checkGit();
 
   if (!currentBranch) {
@@ -108,13 +87,25 @@ const main = async () => {
   }
 
   console.log(`${info} Current branch is ${magenta(currentBranch)}`);
+};
 
+const getGitBranches = async () => {
   const branches = await getBranches();
 
   if (branches.length === 0) {
     console.error(`${error} No other branches in the repository`);
     process.exit(1);
   }
+
+  return branches;
+};
+
+const main = async () => {
+  checkUpdate();
+
+  await checkGitRepository();
+
+  const branches = await getGitBranches();
 
   if (flags.d) {
     await startDeleteBranches(branches);
