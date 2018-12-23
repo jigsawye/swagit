@@ -1,8 +1,14 @@
 #!/usr/bin/env node
 
 const args = require('args');
+const fuzzy = require('fuzzy');
 const inquirer = require('inquirer');
 const { yellow, magenta } = require('chalk');
+
+inquirer.registerPrompt(
+  'autocomplete',
+  require('inquirer-autocomplete-prompt')
+);
 
 const checkUpdate = require('../lib/check-update');
 const checkNodeVersion = require('../lib/check-node-version');
@@ -23,13 +29,19 @@ args.option('d', 'Select branches which you want to delete');
 
 const flags = args.parse(process.argv);
 
+const search = branches => (ans, input = '') =>
+  new Promise(resolve => {
+    const fuzzyResult = fuzzy.filter(input, branches.map(({ value }) => value));
+    resolve(fuzzyResult.map(el => el.original));
+  });
+
 const startCheckout = async branches => {
   const { branch } = await inquirer.prompt([
     {
-      type: 'list',
+      type: 'autocomplete',
       name: 'branch',
       message: 'Which branch do you want to checkout?',
-      choices: branches,
+      source: search(branches),
     },
   ]);
 
