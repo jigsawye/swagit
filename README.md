@@ -20,7 +20,7 @@ Once that's done, you can run this command inside your project's directory:
 
 ```bash
 swagit
-# shotcut
+# shortcut
 sg
 ```
 
