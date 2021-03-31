@@ -30,7 +30,7 @@ sg
 
 #### `-d`
 
-Open a interactive to select branches which will be delete.
+Enter an interactive mode to select branches to be delete.
 
 <img src="https://i.imgur.com/8Vk1yqS.gif" width="800">
 
