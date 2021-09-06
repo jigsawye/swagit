@@ -29,13 +29,18 @@ args.option('d', 'Select branches which you want to delete');
 
 const flags = args.parse(process.argv);
 
-const search = branches => (ans, input = '') =>
-  new Promise(resolve => {
-    const fuzzyResult = fuzzy.filter(input, branches.map(({ value }) => value));
-    resolve(fuzzyResult.map(el => el.original));
-  });
+const search =
+  (branches) =>
+  (ans, input = '') =>
+    new Promise((resolve) => {
+      const fuzzyResult = fuzzy.filter(
+        input,
+        branches.map(({ value }) => value)
+      );
+      resolve(fuzzyResult.map((el) => el.original));
+    });
 
-const startCheckout = async branches => {
+const startCheckout = async (branches) => {
   const { branch } = await inquirer.prompt([
     {
       type: 'autocomplete',
@@ -50,7 +55,7 @@ const startCheckout = async branches => {
   console.log(`${success} Checkout current branch to ${magenta(branch)}`);
 };
 
-const startDeleteBranches = async branches => {
+const startDeleteBranches = async (branches) => {
   const { branches: selectedBranches } = await inquirer.prompt([
     {
       type: 'checkbox',
