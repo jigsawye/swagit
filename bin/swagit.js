@@ -115,7 +115,7 @@ const getGitBranches = async () => {
 };
 
 const main = async () => {
-  checkUpdate();
+  checkUpdate().catch(() => {});
 
   await checkGitRepository();
 
