@@ -30,7 +30,7 @@
     "inquirer": "^8.1.2",
     "inquirer-autocomplete-prompt": "^1.4.0",
     "node-version": "^2.0.0",
-    "simple-git": "^2.45.1",
+    "simple-git": "^3.3.0",
     "update-check": "^1.5.4"
   },
   "devDependencies": {
