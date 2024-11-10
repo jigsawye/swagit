@@ -6,6 +6,12 @@ use tempfile::TempDir;
 fn setup_git_repo() -> TempDir {
   let temp_dir = TempDir::new().unwrap();
 
+  StdCommand::new("git")
+    .args(["config", "--global", "init.defaultBranch", "main"])
+    .current_dir(&temp_dir)
+    .output()
+    .unwrap();
+
   // Initialize Git repository
   StdCommand::new("git")
     .args(["init"])
@@ -22,12 +28,6 @@ fn setup_git_repo() -> TempDir {
 
   StdCommand::new("git")
     .args(["config", "user.email", "test@example.com"])
-    .current_dir(&temp_dir)
-    .output()
-    .unwrap();
-
-  StdCommand::new("git")
-    .args(["config", "init.defaultBranch", "main"])
     .current_dir(&temp_dir)
     .output()
     .unwrap();
