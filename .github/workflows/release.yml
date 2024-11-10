@@ -108,7 +108,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: packages
-          pattern: '*-*'
+          pattern: '*-*/bin/*'
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
