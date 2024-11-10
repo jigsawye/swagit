@@ -34,7 +34,7 @@ impl GitManager {
 
     pub fn get_current_branch(&self) -> Result<String, String> {
         let output = Command::new("git")
-            .args(["rev-parse", "--abbrev-ref", "HEAD"])
+            .args(["branch", "--show-current"])
             .output()
             .map_err(|e| e.to_string())?;
 
