@@ -1,0 +1,93 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            platform: linux-x64
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            platform: linux-arm64
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            platform: darwin-x64
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            platform: darwin-arm64
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            platform: win32-x64
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          target: ${{ matrix.target }}
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --target ${{ matrix.target }}
+
+      - name: Prepare binary
+        run: |
+          mkdir -p npm/@swagit/${{ matrix.platform }}
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            cp target/${{ matrix.target }}/release/sg.exe npm/@swagit/${{ matrix.platform }}/sg.exe
+          else
+            cp target/${{ matrix.target }}/release/sg npm/@swagit/${{ matrix.platform }}/sg
+            chmod +x npm/@swagit/${{ matrix.platform }}/sg
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.platform }}
+          path: npm/@swagit/${{ matrix.platform }}
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: npm/@swagit
+
+      - name: Publish packages
+        run: |
+          cd npm
+          for dir in @swagit/*; do
+            if [ -d "$dir" ]; then
+              cd "$dir"
+              npm publish --access public
+              cd ../..
+            fi
+          done
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
