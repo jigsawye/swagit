@@ -1,5 +1,6 @@
 {
   "name": "@swagit/win32-x64",
+  "private": false,
   "version": "0.1.6",
   "os": [
     "win32"
