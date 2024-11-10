@@ -4,15 +4,9 @@
 
 ## Usage
 
-Firstly, install the package from [npm](https://npmjs.com/release):
-
 ```bash
 npm install -g swagit
-```
-
-Of course you can use [Yarn](https://yarnpkg.com/en/) to install it:
-
-```bash
+pnpm add -g swagit
 yarn global add swagit
 ```
 
@@ -28,13 +22,16 @@ sg
 
 ### Options
 
-#### `-d`
+#### `--delete` or `-d`
 
 Enter an interactive mode to select branches to be deleted.
 
 <img src="https://i.imgur.com/8Vk1yqS.gif" width="800">
 
+#### `--sync` or `-s`
+
+Sync all branches and delete merged branches.
+
 ## License
 
 MIT © [Evan Ye](https://github.com/jigsawye)
-
