@@ -9,9 +9,9 @@ use std::process;
 
 fn main() {
   let matches = Command::new("swagit")
-    .version("1.0.0")
-    .author("Evan Ye <jigsaw.ye@gmail.com>")
-    .about("A swag tool to use git with interactive cli")
+    .version(env!("CARGO_PKG_VERSION"))
+    .author(env!("CARGO_PKG_AUTHORS"))
+    .about(env!("CARGO_PKG_DESCRIPTION"))
     .arg(
       Arg::new("delete")
         .short('d')
