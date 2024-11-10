@@ -1,6 +1,6 @@
 use crate::git::{BranchStatus, GitManager};
 use colored::*;
-use dialoguer::{theme::ColorfulTheme, Confirm, MultiSelect, Select};
+use dialoguer::{theme::ColorfulTheme, Confirm, MultiSelect, FuzzySelect};
 use std::process;
 
 pub fn handle_checkout_command(git: &GitManager) -> Result<(), Box<dyn std::error::Error>> {
@@ -17,7 +17,7 @@ pub fn handle_checkout_command(git: &GitManager) -> Result<(), Box<dyn std::erro
     .collect();
 
   if atty::is(atty::Stream::Stdin) && atty::is(atty::Stream::Stdout) {
-    let selection = Select::with_theme(&ColorfulTheme::default())
+    let selection = FuzzySelect::with_theme(&ColorfulTheme::default())
       .with_prompt("Select the branch to switch to")
       .items(&branch_names)
       .default(0)
