@@ -9,7 +9,7 @@ use std::process;
 
 fn main() {
   let matches = Command::new("swagit")
-    .version("0.1.6")
+    .version("1.0.0")
     .author("Evan Ye <jigsaw.ye@gmail.com>")
     .about("A swag tool to use git with interactive cli")
     .arg(
