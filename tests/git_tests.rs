@@ -58,7 +58,7 @@ fn setup_git_repo() -> TempDir {
 fn test_not_git_repo() {
   let temp_dir = TempDir::new().unwrap();
 
-  Command::cargo_bin("sg")
+  Command::cargo_bin("swagit")
     .unwrap()
     .current_dir(&temp_dir)
     .assert()
@@ -84,7 +84,7 @@ fn test_current_branch() {
     .unwrap();
 
   // Only check the output of the current branch, do not test interactive functionality
-  Command::cargo_bin("sg")
+  Command::cargo_bin("swagit")
     .unwrap()
     .current_dir(&temp_dir)
     .env("RUST_BACKTRACE", "1")
@@ -133,7 +133,7 @@ fn test_delete_branch() {
 fn test_sync_with_no_remote() {
   let temp_dir = setup_git_repo();
 
-  Command::cargo_bin("sg")
+  Command::cargo_bin("swagit")
     .unwrap()
     .current_dir(&temp_dir)
     .arg("-s")

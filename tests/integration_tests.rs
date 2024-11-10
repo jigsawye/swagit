@@ -3,7 +3,7 @@ use predicates::prelude::*;
 
 #[test]
 fn test_help() {
-  Command::cargo_bin("sg")
+  Command::cargo_bin("swagit")
     .unwrap()
     .arg("--help")
     .assert()
@@ -15,7 +15,7 @@ fn test_help() {
 
 #[test]
 fn test_version() {
-  Command::cargo_bin("sg")
+  Command::cargo_bin("swagit")
     .unwrap()
     .arg("--version")
     .assert()
@@ -25,7 +25,7 @@ fn test_version() {
 
 #[test]
 fn test_invalid_flag() {
-  Command::cargo_bin("sg")
+  Command::cargo_bin("swagit")
     .unwrap()
     .arg("--invalid-flag")
     .assert()
