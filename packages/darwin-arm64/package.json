@@ -1,7 +1,15 @@
 {
   "name": "@swagit/darwin-arm64",
+<<<<<<< Updated upstream
   "private": false,
   "version": "0.1.6",
+=======
+  "version": "1.0.0",
+  "description": "macOS ARM64 binary for swagit",
+  "publishConfig": {
+    "access": "public"
+  },
+>>>>>>> Stashed changes
   "os": [
     "darwin"
   ],
@@ -10,6 +18,5 @@
   ],
   "files": [
     "bin"
-  ],
-  "description": "macOS ARM64 binary for swagit"
+  ]
 }

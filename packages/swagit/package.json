@@ -1,7 +1,11 @@
 {
   "name": "swagit",
+<<<<<<< Updated upstream
   "private": false,
   "version": "0.1.6",
+=======
+  "version": "1.0.0",
+>>>>>>> Stashed changes
   "description": "A swag tool to use git with interactive cli",
   "author": "Evan Ye <jigsaw.ye@gmail.com>",
   "license": "MIT",
