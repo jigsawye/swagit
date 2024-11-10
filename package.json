@@ -17,5 +17,14 @@
   },
   "files": [
     "bin"
-  ]
+  ],
+  "packageManager": "pnpm@9.12.3",
+  "devDependencies": {
+    "@changesets/cli": "^2.27.9"
+  },
+  "scripts": {
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish"
+  }
 }
