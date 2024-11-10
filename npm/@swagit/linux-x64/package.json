@@ -1,0 +1,14 @@
+{
+  "name": "@swagit/linux-x64",
+  "version": "0.1.6",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "sg"
+  ],
+  "description": "Linux x64 binary for swagit"
+}

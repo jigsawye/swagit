@@ -1,0 +1,14 @@
+{
+  "name": "@swagit/darwin-arm64",
+  "version": "0.1.6",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "files": [
+    "sg"
+  ],
+  "description": "macOS ARM64 binary for swagit"
+}

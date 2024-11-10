@@ -1,0 +1,14 @@
+{
+  "name": "@swagit/linux-arm64",
+  "version": "0.1.6",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "files": [
+    "sg"
+  ],
+  "description": "Linux ARM64 binary for swagit"
+}

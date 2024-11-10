@@ -1,0 +1,14 @@
+{
+  "name": "@swagit/win32-x64",
+  "version": "0.1.6",
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "sg.exe"
+  ],
+  "description": "Windows x64 binary for swagit"
+}
