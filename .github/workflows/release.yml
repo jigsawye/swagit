@@ -116,7 +116,6 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          version: node .github/workflows/version.js
           publish: |
             pnpm publish -r
             cargo publish
