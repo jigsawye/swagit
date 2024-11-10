@@ -104,20 +104,17 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Download all artifacts
-        # if: steps.changesets.outputs.hasChangesets == 'false'
         uses: actions/download-artifact@v4
         with:
           path: packages
           pattern: '*-*'
 
-      - name: Publish to npm
-        # if: steps.changesets.outputs.hasChangesets == 'false'
-        run: pnpm publish -r --no-git-checks
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm publish -r
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
