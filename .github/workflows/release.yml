@@ -56,18 +56,17 @@ jobs:
       - name: Prepare package
         shell: bash
         run: |
-          mkdir -p npm/@swagit/${{ matrix.name }}/bin
           if [ "${{ matrix.name }}" = "win32-x64" ]; then
-            cp target/${{ matrix.target }}/release/swagit.exe npm/@swagit/${{ matrix.name }}/bin/
+            cp build/target/${{ matrix.target }}/release/swagit.exe packages/${{ matrix.name }}/bin
           else
-            cp target/${{ matrix.target }}/release/swagit npm/@swagit/${{ matrix.name }}/bin/
+            cp build/target/${{ matrix.target }}/release/swagit packages/${{ matrix.name }}/bin
           fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.name }}
-          path: npm/@swagit/${{ matrix.name }}
+          path: packages/${{ matrix.name }}/bin
           compression-level: 0
 
   release:

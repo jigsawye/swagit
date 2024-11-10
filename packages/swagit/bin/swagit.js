@@ -16,7 +16,9 @@ function getBinaryPath() {
     throw new Error(`Unsupported platform: ${platform_arch}`);
   }
 
-  return require.resolve(binary_path);
+  const sub_path = platform === 'win32' ? 'swagit.exe' : 'swagit';
+
+  return require.resolve(`${binary_path}/bin/${sub_path}`);
 }
 
 require('child_process')

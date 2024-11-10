@@ -8,7 +8,7 @@
     "arm64"
   ],
   "files": [
-    "sg"
+    "bin"
   ],
   "description": "Linux ARM64 binary for swagit"
 }
