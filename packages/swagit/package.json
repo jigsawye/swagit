@@ -1,7 +1,7 @@
 {
   "name": "swagit",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.1.6",
   "description": "A swag tool to use git with interactive cli",
   "author": "Evan Ye <jigsaw.ye@gmail.com>",
   "license": "MIT",

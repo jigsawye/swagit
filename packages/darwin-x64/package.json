@@ -1,7 +1,7 @@
 {
   "name": "@swagit/darwin-x64",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.1.6",
   "os": [
     "darwin"
   ],
