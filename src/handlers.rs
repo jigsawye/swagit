@@ -15,15 +15,21 @@ pub fn handle_checkout_command(git: &GitManager) -> Result<(), Box<dyn std::erro
         .map(|b| format!("{} [{}]", b.name, b.commit_id))
         .collect();
 
-    let selection = Select::with_theme(&ColorfulTheme::default())
-        .with_prompt("Select the branch to switch to")
-        .items(&branch_names)
-        .default(0)
-        .interact()?;
+    if atty::is(atty::Stream::Stdin) && atty::is(atty::Stream::Stdout) {
+        let selection = Select::with_theme(&ColorfulTheme::default())
+            .with_prompt("Select the branch to switch to")
+            .items(&branch_names)
+            .default(0)
+            .interact()?;
 
-    let branch_name = &branches[selection].name;
-    git.checkout_branch(branch_name)?;
-    println!("{}", format!("Switched to branch {}", branch_name).green());
+        let branch_name = &branches[selection].name;
+        git.checkout_branch(branch_name)?;
+        println!("{}", format!("Switched to branch {}", branch_name).green());
+    } else {
+        let branch_name = &branches[0].name;
+        git.checkout_branch(branch_name)?;
+        println!("{}", format!("Switched to branch {}", branch_name).green());
+    }
 
     Ok(())
 }

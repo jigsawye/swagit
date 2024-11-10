@@ -14,3 +14,9 @@ path = "src/main.rs"
 clap = { version = "4.4", features = ["derive"] }
 dialoguer = "0.11"
 colored = "2.0"
+atty = "0.2"
+
+[dev-dependencies]
+tempfile = "3.8"
+assert_cmd = "2.0"
+predicates = "3.0"
