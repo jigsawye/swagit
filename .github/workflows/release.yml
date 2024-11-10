@@ -50,11 +50,8 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Install cross-compilation tools
-        if: matrix.target == 'aarch64-unknown-linux-gnu'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+      - name: Install cross
+        run: cargo install cross
 
       - name: Build binary
         run: cross build --release --target ${{ matrix.target }}
