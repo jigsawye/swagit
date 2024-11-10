@@ -69,7 +69,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p packages/${{ matrix.name }}/bin
-          if [ "${{ matrix.name }}" = "win32-x64" ]; then
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
             cp target/${{ matrix.target }}/release/swagit.exe packages/${{ matrix.name }}/bin
           else
             cp target/${{ matrix.target }}/release/swagit packages/${{ matrix.name }}/bin
