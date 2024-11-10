@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  release:
+  build:
     strategy:
       matrix:
         include:
@@ -26,7 +26,7 @@ jobs:
             target: x86_64-pc-windows-msvc
             name: win32-x64
 
-    name: Release ${{ matrix.name }}
+    name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -62,6 +62,41 @@ jobs:
           else
             cp target/${{ matrix.target }}/release/swagit npm/@swagit/${{ matrix.name }}/bin/
           fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: npm/@swagit/${{ matrix.name }}
+          compression-level: 0
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.x
+          cache: pnpm
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: npm
+          pattern: '*'
+          merge-multiple: true
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
