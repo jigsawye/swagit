@@ -93,11 +93,13 @@ pub fn handle_delete_command(git: &GitManager) -> Result<(), Box<dyn std::error:
 pub fn handle_sync_command(git: &GitManager) -> Result<(), Box<dyn std::error::Error>> {
   println!("{}", "Syncing with remote...".blue());
 
-  // sync all branches
-  let branch_statuses = git.sync_all_branches()?;
+  let branch_statuses = git.sync_branches()?;
+  let mut has_updates = false;
+
   for status in branch_statuses {
     match status {
       BranchStatus::Updated(branch) => {
+        has_updates = true;
         println!(
           "{} Updated branch {} (fast-forward)",
           "✓".green(),
@@ -105,13 +107,15 @@ pub fn handle_sync_command(git: &GitManager) -> Result<(), Box<dyn std::error::E
         );
       }
       BranchStatus::Merged(branch) => {
+        has_updates = true;
         println!(
-          "{} Branch {} was merged to default branch",
-          "!".yellow(),
+          "{} Deleted branch {} (was merged)",
+          "✓".green(),
           branch
         );
       }
       BranchStatus::RemoteGone(branch) => {
+        has_updates = true;
         println!(
           "{} Branch {} was deleted on remote but not merged",
           "!".red(),
@@ -119,37 +123,20 @@ pub fn handle_sync_command(git: &GitManager) -> Result<(), Box<dyn std::error::E
         );
       }
       BranchStatus::Diverged(branch) => {
+        has_updates = true;
         println!("{} Branch {} has unpushed commits", "!".yellow(), branch);
+      }
+      BranchStatus::LocalOnly(branch) => {
+        println!("{} Branch {} is local only", "i".blue(), branch);
+      }
+      BranchStatus::UpToDate() => {
+        // Do nothing
       }
     }
   }
 
-  // get and process merged branches
-  let merged_branches = git.get_merged_branches()?;
-
-  if !merged_branches.is_empty() {
-    println!(
-      "\nFound {} merged branches that can be deleted:",
-      merged_branches.len()
-    );
-    for branch in &merged_branches {
-      println!("  {} [{}]", branch.name, branch.commit_id);
-    }
-
-    if Confirm::with_theme(&ColorfulTheme::default())
-      .with_prompt("Do you want to delete these merged branches?")
-      .interact()?
-    {
-      let branch_names: Vec<String> = merged_branches.into_iter().map(|b| b.name).collect();
-
-      git.delete_branches(&branch_names)?;
-      println!(
-        "{}",
-        format!("Deleted {} merged branches", branch_names.len()).green()
-      );
-    }
-  } else {
-    println!("\n{}", "No merged branches to clean up".blue());
+  if !has_updates {
+    println!("{}", "Everything is up to date".green());
   }
 
   Ok(())

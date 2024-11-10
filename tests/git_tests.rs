@@ -139,5 +139,5 @@ fn test_sync_with_no_remote() {
     .arg("-s")
     .assert()
     .failure()
-    .stderr(predicate::str::contains("Failed to fetch from remote"));
+    .stderr(predicate::str::contains("No remote repository configured"));
 }
