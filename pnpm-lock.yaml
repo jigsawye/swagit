@@ -20,6 +20,8 @@ importers:
 
   packages/linux-x64: {}
 
+  packages/swagit: {}
+
   packages/win32-x64: {}
 
 packages:

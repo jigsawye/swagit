@@ -1,6 +1,7 @@
 {
   "name": "swagit",
-  "version": "0.1.6",
+  "version": "0.0.0",
+  "private": true,
   "description": "A swag tool to use git with interactive cli",
   "author": "Evan Ye <jigsaw.ye@gmail.com>",
   "license": "MIT",
@@ -8,16 +9,6 @@
     "sg": "bin/swagit.js",
     "swagit": "bin/swagit.js"
   },
-  "optionalDependencies": {
-    "@swagit/darwin-x64": "0.1.6",
-    "@swagit/darwin-arm64": "0.1.6",
-    "@swagit/linux-x64": "0.1.6",
-    "@swagit/linux-arm64": "0.1.6",
-    "@swagit/win32-x64": "0.1.6"
-  },
-  "files": [
-    "bin"
-  ],
   "packageManager": "pnpm@9.12.3",
   "devDependencies": {
     "@changesets/cli": "^2.27.9"
