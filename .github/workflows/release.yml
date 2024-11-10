@@ -120,4 +120,4 @@ jobs:
 
       - name: Publish to npm
         # if: steps.changesets.outputs.hasChangesets == 'false'
-        run: pnpm publish -r
+        run: pnpm publish -r --no-git-checks
