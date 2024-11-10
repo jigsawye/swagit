@@ -1,0 +1,21 @@
+{
+  "name": "swagit",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A swag tool to use git with interactive cli",
+  "author": "Evan Ye <jigsaw.ye@gmail.com>",
+  "license": "MIT",
+  "bin": {
+    "sg": "bin/swagit.js",
+    "swagit": "bin/swagit.js"
+  },
+  "packageManager": "pnpm@9.12.3",
+  "devDependencies": {
+    "@changesets/cli": "^2.27.9"
+  },
+  "scripts": {
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish"
+  }
+}
