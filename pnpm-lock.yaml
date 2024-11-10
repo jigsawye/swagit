@@ -20,7 +20,23 @@ importers:
 
   packages/linux-x64: {}
 
-  packages/swagit: {}
+  packages/swagit:
+    optionalDependencies:
+      '@swagit/darwin-arm64':
+        specifier: workspace:*
+        version: link:../darwin-arm64
+      '@swagit/darwin-x64':
+        specifier: workspace:*
+        version: link:../darwin-x64
+      '@swagit/linux-arm64':
+        specifier: workspace:*
+        version: link:../linux-arm64
+      '@swagit/linux-x64':
+        specifier: workspace:*
+        version: link:../linux-x64
+      '@swagit/win32-x64':
+        specifier: workspace:*
+        version: link:../win32-x64
 
   packages/win32-x64: {}
 
