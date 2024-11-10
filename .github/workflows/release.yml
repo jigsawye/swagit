@@ -112,13 +112,12 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Download all artifacts
-        if: steps.changesets.outputs.hasChangesets == 'false'
+        # if: steps.changesets.outputs.hasChangesets == 'false'
         uses: actions/download-artifact@v4
         with:
           path: packages
           pattern: '*-*'
-          merge-multiple: true
 
       - name: Publish to npm
-        if: steps.changesets.outputs.hasChangesets == 'false'
+        # if: steps.changesets.outputs.hasChangesets == 'false'
         run: pnpm publish -r
