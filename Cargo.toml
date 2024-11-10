@@ -7,7 +7,7 @@ authors = ["Evan Ye <jigsaw.ye@gmail.com>"]
 license = "MIT"
 
 [[bin]]
-name = "sg"
+name = "swagit"
 path = "src/main.rs"
 
 [dependencies]
