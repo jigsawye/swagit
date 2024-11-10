@@ -50,16 +50,23 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
+      - name: Install cross-compilation tools
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
       - name: Build binary
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Prepare package
         shell: bash
         run: |
+          mkdir -p packages/${{ matrix.name }}/bin
           if [ "${{ matrix.name }}" = "win32-x64" ]; then
-            cp build/target/${{ matrix.target }}/release/swagit.exe packages/${{ matrix.name }}/bin
+            cp target/${{ matrix.target }}/release/swagit.exe packages/${{ matrix.name }}/bin
           else
-            cp build/target/${{ matrix.target }}/release/swagit packages/${{ matrix.name }}/bin
+            cp target/${{ matrix.target }}/release/swagit packages/${{ matrix.name }}/bin
           fi
 
       - name: Upload artifact
