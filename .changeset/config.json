@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.3/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "jigsawye/swagit" }],
+  "changelog": false,
   "commit": false,
   "fixed": [],
   "linked": [],
