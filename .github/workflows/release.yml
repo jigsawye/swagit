@@ -96,7 +96,7 @@ jobs:
         uses: pnpm/action-setup@v4.0.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22.x
           cache: pnpm
@@ -104,17 +104,21 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Download all artifacts
+        if: steps.changesets.outputs.hasChangesets == 'false'
         uses: actions/download-artifact@v4
         with:
           path: packages
           pattern: '*-*'
+          merge-multiple: true
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          publish: pnpm release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        run: pnpm publish -r
