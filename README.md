@@ -24,8 +24,12 @@ Once that's done, you can run this command inside your project's directory:
 
 ```bash
 swagit
-# shortcut
-sg
+```
+
+You can set an alias to use a more convenient command:
+
+```bash
+alias sg="swagit"
 ```
 
 <img src="https://i.imgur.com/lZE5CG1.gif" width="500">
