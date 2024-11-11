@@ -92,13 +92,10 @@ impl GitManager {
     let current = self.get_current_branch()?;
     let default_branch = self.get_default_branch()?;
 
-    // Check current branch first
-    statuses.push(self.check_branch_status(&current)?);
-
     // Get all local branches
     let branches = self.get_local_branches()?;
 
-    // Check merged branches
+    // Check merged branches first
     let merged_branches: Vec<String> = self.command("branch", &["--merged", &default_branch])?
         .lines()
         .filter_map(|line| {
@@ -121,9 +118,14 @@ impl GitManager {
         statuses.push(BranchStatus::Merged(branch.clone()));
     }
 
+    // Check current branch status
+    if !merged_branches.contains(&current) {
+        statuses.push(self.check_branch_status(&current)?);
+    }
+
     // Process other branches
     for branch in branches {
-        if merged_branches.contains(&branch.name) {
+        if merged_branches.contains(&branch.name) || branch.name == current {
             continue;
         }
 
@@ -149,7 +151,7 @@ impl GitManager {
   }
 
   fn check_branch_status(&self, branch: &str) -> Result<BranchStatus, Box<dyn std::error::Error>> {
-    // 檢查是否有上游分支
+    // Check if there is an upstream branch
     let has_upstream = self.command(
         "rev-parse",
         &["--verify", &format!("refs/remotes/origin/{}", branch)]
