@@ -23,7 +23,23 @@ importers:
 
   packages/linux-x64: {}
 
-  packages/swagit: {}
+  packages/swagit:
+    optionalDependencies:
+      '@swagit/darwin-arm64':
+        specifier: ^1.0.1
+        version: 1.0.1
+      '@swagit/darwin-x64':
+        specifier: ^1.0.1
+        version: 1.0.1
+      '@swagit/linux-arm64':
+        specifier: ^1.0.1
+        version: 1.0.1
+      '@swagit/linux-x64':
+        specifier: ^1.0.1
+        version: 1.0.1
+      '@swagit/win32-x64':
+        specifier: ^1.0.1
+        version: 1.0.1
 
   packages/win32-x64: {}
 
@@ -111,6 +127,31 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@swagit/darwin-arm64@1.0.1':
+    resolution: {integrity: sha512-0c4J43NDvx9WzGRuS3ilKJMf13xmVtKniEqk6dmGPwaXF+6HBN2oo35VNT56CSUEH5tRD6IxWsH0cl7H5lZqBw==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@swagit/darwin-x64@1.0.1':
+    resolution: {integrity: sha512-XYbawD+4Z6lx9R2SbVP1mwvSIQFP52gLazFIzDz/u172Lp1giBXUy8Aq+lEg+Wuaf53eJckHne/dUQhBOQgkrA==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@swagit/linux-arm64@1.0.1':
+    resolution: {integrity: sha512-gKCKtM+4WcSYShTdvedVTEF4Qdr4caaxXQSaTjG9SlV/+hXu4EtcxN8DWYMKbAfKGGa3D54qspWzRwDuzC1PDw==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@swagit/linux-x64@1.0.1':
+    resolution: {integrity: sha512-gEKm4oYwkHH//ByzH2cy8hZsGwZ002D/hOU8a6H0Qi9wdUjPjGbnfh/0k1CBDvawyFdV+1NfPWi3uaKNLgx/6w==}
+    cpu: [x64]
+    os: [linux]
+
+  '@swagit/win32-x64@1.0.1':
+    resolution: {integrity: sha512-zOEHKlXi2kt7tQpU2haoemgy3VecizJ28hP1YCV6aToEgveIY78ZtYRZ+3QemsBxyQCJLOooaMCFRBbGK+0maQ==}
+    cpu: [x64]
+    os: [win32]
 
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
@@ -622,6 +663,21 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  '@swagit/darwin-arm64@1.0.1':
+    optional: true
+
+  '@swagit/darwin-x64@1.0.1':
+    optional: true
+
+  '@swagit/linux-arm64@1.0.1':
+    optional: true
+
+  '@swagit/linux-x64@1.0.1':
+    optional: true
+
+  '@swagit/win32-x64@1.0.1':
+    optional: true
 
   '@types/node@12.20.55': {}
 
