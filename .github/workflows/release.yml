@@ -104,7 +104,7 @@ jobs:
           cache: pnpm
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
@@ -116,7 +116,6 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          version: pnpm run version
           publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -17,7 +17,6 @@
   },
   "scripts": {
     "changeset": "changeset",
-    "version": "changeset version && pnpm install --lockfile-only",
     "release": "changeset publish"
   }
 }
