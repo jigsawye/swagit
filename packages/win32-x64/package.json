@@ -1,6 +1,6 @@
 {
   "name": "@swagit/win32-x64",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "publishConfig": {
     "access": "public"
   },
