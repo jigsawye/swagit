@@ -17,11 +17,14 @@ pub fn handle_checkout_command(git: &GitManager) -> Result<(), Box<dyn std::erro
     .collect();
 
   if atty::is(atty::Stream::Stdin) && atty::is(atty::Stream::Stdout) {
-    let selection = FuzzySelect::with_theme(&ColorfulTheme::default())
+    let selection = match FuzzySelect::with_theme(&ColorfulTheme::default())
       .with_prompt("Select the branch to switch to")
       .items(&branch_names)
       .default(0)
-      .interact()?;
+      .interact_opt()? {
+        Some(selections) => selections,
+        None => return Ok(()),
+      };
 
     let branch_name = &branches[selection].name;
     git.checkout_branch(branch_name)?;
@@ -48,10 +51,13 @@ pub fn handle_delete_command(git: &GitManager) -> Result<(), Box<dyn std::error:
     .map(|b| format!("{} [{}]", b.name, b.commit_id))
     .collect();
 
-  let selections = MultiSelect::with_theme(&ColorfulTheme::default())
+  let selections = match MultiSelect::with_theme(&ColorfulTheme::default())
     .with_prompt("Select the branches to delete")
     .items(&branch_names)
-    .interact()?;
+    .interact_opt()? {
+      Some(selections) => selections,
+      None => return Ok(()),
+    };
 
   if selections.is_empty() {
     println!("No branches selected, exiting.");
