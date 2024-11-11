@@ -1,5 +1,15 @@
 # @swagit/darwin-arm64
 
+## 1.0.2
+
+### Patch Changes
+
+- [`e49ccf8`](https://github.com/jigsawye/swagit/commit/e49ccf8b5574728e8c3ef2033a8b37c13fcfbb37) Thanks [@jigsawye](https://github.com/jigsawye)! - handle ctrlc
+
+- [`5156fb5`](https://github.com/jigsawye/swagit/commit/5156fb5f8f68cd756ba4867fc247643584e79649) Thanks [@jigsawye](https://github.com/jigsawye)! - update sync implementation
+
+- [`5156fb5`](https://github.com/jigsawye/swagit/commit/5156fb5f8f68cd756ba4867fc247643584e79649) Thanks [@jigsawye](https://github.com/jigsawye)! - Support esc
+
 ## 1.0.1
 
 ### Patch Changes
