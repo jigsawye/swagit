@@ -14,6 +14,7 @@ pub enum BranchStatus {
   Diverged(String),   // local has unpushed commits
   UpToDate(),   // branch is already up to date
   LocalOnly(String),  // local branch never pushed
+  Modified(String),   // has uncommitted changes
 }
 
 pub struct GitManager;
@@ -72,6 +73,12 @@ impl GitManager {
   }
 
   pub fn sync_branches(&self) -> Result<Vec<BranchStatus>, Box<dyn std::error::Error>> {
+    // Check working directory status
+    let status = self.command("status", &["--porcelain"])?;
+    if !status.is_empty() {
+        return Ok(vec![BranchStatus::Modified(self.get_current_branch()?)]);
+    }
+
     // Check remote
     let remote_exists = !self.command("remote", &[])?.trim().is_empty();
     if !remote_exists {
@@ -84,6 +91,9 @@ impl GitManager {
     let mut statuses = Vec::new();
     let current = self.get_current_branch()?;
     let default_branch = self.get_default_branch()?;
+
+    // Check current branch first
+    statuses.push(self.check_branch_status(&current)?);
 
     // Get all local branches
     let branches = self.get_local_branches()?;
@@ -113,11 +123,11 @@ impl GitManager {
 
     // Process other branches
     for branch in branches {
-        if branch.name == current || merged_branches.contains(&branch.name) {
+        if merged_branches.contains(&branch.name) {
             continue;
         }
 
-        // 檢查分支狀態
+        // Check branch status
         statuses.push(self.check_branch_status(&branch.name)?);
     }
 
@@ -139,10 +149,10 @@ impl GitManager {
   }
 
   fn check_branch_status(&self, branch: &str) -> Result<BranchStatus, Box<dyn std::error::Error>> {
-    // Check if there is an upstream branch
+    // 檢查是否有上游分支
     let has_upstream = self.command(
-      "rev-parse",
-      &["--verify", &format!("refs/remotes/origin/{}", branch)]
+        "rev-parse",
+        &["--verify", &format!("refs/remotes/origin/{}", branch)]
     ).is_ok();
 
     if !has_upstream {

@@ -129,6 +129,14 @@ pub fn handle_sync_command(git: &GitManager) -> Result<(), Box<dyn std::error::E
       BranchStatus::LocalOnly(branch) => {
         println!("{} Branch {} is local only", "i".blue(), branch);
       }
+      BranchStatus::Modified(branch) => {
+        has_updates = true;
+        println!(
+          "{} Branch {} has uncommitted changes",
+          "!".yellow(),
+          branch
+        );
+      }
       BranchStatus::UpToDate() => {
         // Do nothing
       }
