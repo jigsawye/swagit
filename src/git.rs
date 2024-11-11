@@ -12,7 +12,7 @@ pub enum BranchStatus {
   Merged(String),     // branch merged can be deleted
   RemoteGone(String), // remote branch deleted
   Diverged(String),   // local has unpushed commits
-  UpToDate(),   // branch is already up to date
+  UpToDate,   // branch is already up to date
   LocalOnly(String),  // local branch never pushed
   Modified(String),   // has uncommitted changes
 }
@@ -171,7 +171,7 @@ impl GitManager {
         let right: usize = right.parse().unwrap_or(0);
 
         match (left, right) {
-          (0, 0) => Ok(BranchStatus::UpToDate()),
+          (0, 0) => Ok(BranchStatus::UpToDate),
           (_, 0) => Ok(BranchStatus::Diverged(branch.to_string())),
           (0, _) => {
             if self.check_remote_branch(branch)? {
@@ -185,7 +185,7 @@ impl GitManager {
                 self.update_branch_ref(branch, &format!("refs/remotes/origin/{}", branch))?;
                 Ok(BranchStatus::Updated(branch.to_string()))
               } else {
-                Ok(BranchStatus::UpToDate())
+                Ok(BranchStatus::UpToDate)
               }
             } else {
               Ok(BranchStatus::RemoteGone(branch.to_string()))

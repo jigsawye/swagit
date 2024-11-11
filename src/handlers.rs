@@ -143,9 +143,7 @@ pub fn handle_sync_command(git: &GitManager) -> Result<(), Box<dyn std::error::E
           branch
         );
       }
-      BranchStatus::UpToDate() => {
-        // Do nothing
-      }
+      BranchStatus::UpToDate => ()
     }
   }
 
