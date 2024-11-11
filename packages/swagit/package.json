@@ -9,11 +9,11 @@
     "swagit": "bin/swagit.js"
   },
   "optionalDependencies": {
-    "@swagit/darwin-x64": "workspace:*",
-    "@swagit/darwin-arm64": "workspace:*",
-    "@swagit/linux-x64": "workspace:*",
-    "@swagit/linux-arm64": "workspace:*",
-    "@swagit/win32-x64": "workspace:*"
+    "@swagit/darwin-x64": "^1.0.1",
+    "@swagit/darwin-arm64": "^1.0.1",
+    "@swagit/linux-x64": "^1.0.1",
+    "@swagit/linux-arm64": "^1.0.1",
+    "@swagit/win32-x64": "^1.0.1"
   },
   "files": [
     "bin"
