@@ -1,6 +1,6 @@
 use crate::git::{BranchStatus, GitManager};
 use colored::*;
-use dialoguer::{theme::ColorfulTheme, Confirm, MultiSelect, FuzzySelect};
+use dialoguer::{theme::ColorfulTheme, Confirm, FuzzySelect, MultiSelect};
 use std::process;
 
 pub fn handle_checkout_command(git: &GitManager) -> Result<(), Box<dyn std::error::Error>> {
@@ -21,10 +21,11 @@ pub fn handle_checkout_command(git: &GitManager) -> Result<(), Box<dyn std::erro
       .with_prompt("Select the branch to switch to")
       .items(&branch_names)
       .default(0)
-      .interact_opt()? {
-        Some(selections) => selections,
-        None => return Ok(()),
-      };
+      .interact_opt()?
+    {
+      Some(selections) => selections,
+      None => return Ok(()),
+    };
 
     let branch_name = &branches[selection].name;
     git.checkout_branch(branch_name)?;
@@ -54,10 +55,11 @@ pub fn handle_delete_command(git: &GitManager) -> Result<(), Box<dyn std::error:
   let selections = match MultiSelect::with_theme(&ColorfulTheme::default())
     .with_prompt("Select the branches to delete")
     .items(&branch_names)
-    .interact_opt()? {
-      Some(selections) => selections,
-      None => return Ok(()),
-    };
+    .interact_opt()?
+  {
+    Some(selections) => selections,
+    None => return Ok(()),
+  };
 
   if selections.is_empty() {
     println!("No branches selected, exiting.");
@@ -114,11 +116,7 @@ pub fn handle_sync_command(git: &GitManager) -> Result<(), Box<dyn std::error::E
       }
       BranchStatus::Merged(branch) => {
         has_updates = true;
-        println!(
-          "{} Deleted branch {} (was merged)",
-          "✓".green(),
-          branch
-        );
+        println!("{} Deleted branch {} (was merged)", "✓".green(), branch);
       }
       BranchStatus::RemoteGone(branch) => {
         has_updates = true;
@@ -137,13 +135,9 @@ pub fn handle_sync_command(git: &GitManager) -> Result<(), Box<dyn std::error::E
       }
       BranchStatus::Modified(branch) => {
         has_updates = true;
-        println!(
-          "{} Branch {} has uncommitted changes",
-          "!".yellow(),
-          branch
-        );
+        println!("{} Branch {} has uncommitted changes", "!".yellow(), branch);
       }
-      BranchStatus::UpToDate => ()
+      BranchStatus::UpToDate => (),
     }
   }
 

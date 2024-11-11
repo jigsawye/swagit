@@ -12,7 +12,7 @@ pub enum BranchStatus {
   Merged(String),     // branch merged can be deleted
   RemoteGone(String), // remote branch deleted
   Diverged(String),   // local has unpushed commits
-  UpToDate,   // branch is already up to date
+  UpToDate,           // branch is already up to date
   LocalOnly(String),  // local branch never pushed
   Modified(String),   // has uncommitted changes
 }
@@ -24,7 +24,7 @@ impl GitManager {
     // check if in git repository
     match Self.command("rev-parse", &["--git-dir"]) {
       Ok(_) => Ok(Self),
-      Err(_) => Err("Not a git repository".into())
+      Err(_) => Err("Not a git repository".into()),
     }
   }
 
@@ -41,7 +41,12 @@ impl GitManager {
   }
 
   pub fn get_current_branch(&self) -> Result<String, Box<dyn std::error::Error>> {
-    Ok(self.command("branch", &["--show-current"])?.trim().to_string())
+    Ok(
+      self
+        .command("branch", &["--show-current"])?
+        .trim()
+        .to_string(),
+    )
   }
 
   pub fn get_local_branches(&self) -> Result<Vec<BranchInfo>, Box<dyn std::error::Error>> {
@@ -76,13 +81,13 @@ impl GitManager {
     // Check working directory status
     let status = self.command("status", &["--porcelain"])?;
     if !status.is_empty() {
-        return Ok(vec![BranchStatus::Modified(self.get_current_branch()?)]);
+      return Ok(vec![BranchStatus::Modified(self.get_current_branch()?)]);
     }
 
     // Check remote
     let remote_exists = !self.command("remote", &[])?.trim().is_empty();
     if !remote_exists {
-        return Err("No remote repository configured".into());
+      return Err("No remote repository configured".into());
     }
 
     // Update remote info
@@ -96,51 +101,50 @@ impl GitManager {
     let branches = self.get_local_branches()?;
 
     // Check merged branches first
-    let merged_branches: Vec<String> = self.command("branch", &["--merged", &default_branch])?
-        .lines()
-        .filter_map(|line| {
-            let branch = line.trim();
-            if !branch.is_empty() &&
-               branch != &default_branch &&
-               branch != "master" &&
-               branch != "main" &&
-               !branch.starts_with('*') {
-                Some(branch.to_string())
-            } else {
-                None
-            }
-        })
-        .collect();
+    let merged_branches: Vec<String> = self
+      .command("branch", &["--merged", &default_branch])?
+      .lines()
+      .filter_map(|line| {
+        let branch = line.trim();
+        if !branch.is_empty()
+          && branch != &default_branch
+          && branch != "master"
+          && branch != "main"
+          && !branch.starts_with('*')
+        {
+          Some(branch.to_string())
+        } else {
+          None
+        }
+      })
+      .collect();
 
     // Process merged branches
     for branch in &merged_branches {
-        self.delete_branches(&[branch.clone()])?;
-        statuses.push(BranchStatus::Merged(branch.clone()));
+      self.delete_branches(&[branch.clone()])?;
+      statuses.push(BranchStatus::Merged(branch.clone()));
     }
 
     // Check current branch status
     if !merged_branches.contains(&current) {
-        statuses.push(self.check_branch_status(&current)?);
+      statuses.push(self.check_branch_status(&current)?);
     }
 
     // Process other branches
     for branch in branches {
-        if merged_branches.contains(&branch.name) || branch.name == current {
-            continue;
-        }
+      if merged_branches.contains(&branch.name) || branch.name == current {
+        continue;
+      }
 
-        // Check branch status
-        statuses.push(self.check_branch_status(&branch.name)?);
+      // Check branch status
+      statuses.push(self.check_branch_status(&branch.name)?);
     }
 
     Ok(statuses)
   }
 
   fn command(&self, cmd: &str, args: &[&str]) -> Result<String, Box<dyn std::error::Error>> {
-    let output = Command::new("git")
-      .arg(cmd)
-      .args(args)
-      .output()?;
+    let output = Command::new("git").arg(cmd).args(args).output()?;
 
     if output.status.success() {
       Ok(String::from_utf8(output.stdout)?)
@@ -152,10 +156,12 @@ impl GitManager {
 
   fn check_branch_status(&self, branch: &str) -> Result<BranchStatus, Box<dyn std::error::Error>> {
     // Check if there is an upstream branch
-    let has_upstream = self.command(
+    let has_upstream = self
+      .command(
         "rev-parse",
-        &["--verify", &format!("refs/remotes/origin/{}", branch)]
-    ).is_ok();
+        &["--verify", &format!("refs/remotes/origin/{}", branch)],
+      )
+      .is_ok();
 
     if !has_upstream {
       return Ok(BranchStatus::LocalOnly(branch.to_string()));
@@ -163,7 +169,11 @@ impl GitManager {
 
     let output = self.command(
       "rev-list",
-      &["--left-right", "--count", &format!("{}...origin/{}", branch, branch)]
+      &[
+        "--left-right",
+        "--count",
+        &format!("{}...origin/{}", branch, branch),
+      ],
     )?;
 
     let counts: Vec<&str> = output.trim().split_whitespace().collect();
@@ -178,10 +188,10 @@ impl GitManager {
           (0, _) => {
             if self.check_remote_branch(branch)? {
               let local_sha = self.command("rev-parse", &[branch])?.trim().to_string();
-              let remote_sha = self.command(
-                "rev-parse",
-                &[&format!("origin/{}", branch)]
-              )?.trim().to_string();
+              let remote_sha = self
+                .command("rev-parse", &[&format!("origin/{}", branch)])?
+                .trim()
+                .to_string();
 
               if local_sha != remote_sha {
                 self.update_branch_ref(branch, &format!("refs/remotes/origin/{}", branch))?;
@@ -192,27 +202,26 @@ impl GitManager {
             } else {
               Ok(BranchStatus::RemoteGone(branch.to_string()))
             }
-          },
-          _ => Ok(BranchStatus::Diverged(branch.to_string()))
+          }
+          _ => Ok(BranchStatus::Diverged(branch.to_string())),
         }
-      },
-      _ => Ok(BranchStatus::RemoteGone(branch.to_string()))
+      }
+      _ => Ok(BranchStatus::RemoteGone(branch.to_string())),
     }
   }
 
   fn check_remote_branch(&self, branch: &str) -> Result<bool, Box<dyn std::error::Error>> {
-    Ok(self.command(
-      "rev-parse",
-      &[&format!("refs/remotes/origin/{}", branch)]
-    ).is_ok())
+    Ok(
+      self
+        .command("rev-parse", &[&format!("refs/remotes/origin/{}", branch)])
+        .is_ok(),
+    )
   }
 
   fn get_default_branch(&self) -> Result<String, Box<dyn std::error::Error>> {
     // Try to get from remote first
     match self.command("rev-parse", &["--abbrev-ref", "origin/HEAD"]) {
-      Ok(result) if !result.trim().is_empty() => {
-        Ok(result.trim().replace("origin/", ""))
-      }
+      Ok(result) if !result.trim().is_empty() => Ok(result.trim().replace("origin/", "")),
       _ => {
         // If no remote, try local common branch names
         for branch in ["main", "master"] {
@@ -225,15 +234,13 @@ impl GitManager {
     }
   }
 
-  fn update_branch_ref(&self, branch: &str, target: &str) -> Result<(), Box<dyn std::error::Error>> {
+  fn update_branch_ref(
+    &self,
+    branch: &str,
+    target: &str,
+  ) -> Result<(), Box<dyn std::error::Error>> {
     // Use update-ref to update branch reference
-    self.command(
-      "update-ref",
-      &[
-        &format!("refs/heads/{}", branch),
-        target
-      ]
-    )?;
+    self.command("update-ref", &[&format!("refs/heads/{}", branch), target])?;
     Ok(())
   }
 }
