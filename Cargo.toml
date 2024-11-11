@@ -1,6 +1,6 @@
 [package]
 name = "swagit"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 description = "A swag tool to use git with interactive cli"
 authors = ["Evan Ye <jigsaw.ye@gmail.com>"]
