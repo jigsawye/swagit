@@ -13,7 +13,15 @@ pub fn handle_checkout_command(git: &GitManager) -> Result<(), Box<dyn std::erro
 
   let branch_names: Vec<String> = branches
     .iter()
-    .map(|b| format!("{} [{}]", b.name, b.commit_id))
+    .map(|b| {
+      let mut display = format!("{} [{}]", b.name, b.commit_id);
+      if let Some(worktree_path) = &b.worktree_path {
+        if let Some(worktree_name) = std::path::Path::new(worktree_path).file_name() {
+          display.push_str(&format!(" ({})", worktree_name.to_string_lossy()));
+        }
+      }
+      display
+    })
     .collect();
 
   if atty::is(atty::Stream::Stdin) && atty::is(atty::Stream::Stdout) {
@@ -49,7 +57,15 @@ pub fn handle_delete_command(git: &GitManager) -> Result<(), Box<dyn std::error:
 
   let branch_names: Vec<String> = branches
     .iter()
-    .map(|b| format!("{} [{}]", b.name, b.commit_id))
+    .map(|b| {
+      let mut display = format!("{} [{}]", b.name, b.commit_id);
+      if let Some(worktree_path) = &b.worktree_path {
+        if let Some(worktree_name) = std::path::Path::new(worktree_path).file_name() {
+          display.push_str(&format!(" ({})", worktree_name.to_string_lossy()));
+        }
+      }
+      display
+    })
     .collect();
 
   let selections = match MultiSelect::with_theme(&ColorfulTheme::default())

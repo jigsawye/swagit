@@ -4,6 +4,7 @@ use std::process::Command;
 pub struct BranchInfo {
   pub name: String,
   pub commit_id: String,
+  pub worktree_path: Option<String>,
 }
 
 #[derive(Debug)]
@@ -59,14 +60,18 @@ impl GitManager {
       ],
     )?;
 
+    let worktrees = self.get_worktrees().unwrap_or_default();
+
     let branches = output
       .lines()
       .filter_map(|line| {
         let parts: Vec<&str> = line.split_whitespace().collect();
         if parts.len() == 2 && parts[0] != current {
+          let worktree_path = worktrees.get(parts[0]).cloned();
           Some(BranchInfo {
             name: parts[0].to_string(),
             commit_id: parts[1].to_string(),
+            worktree_path,
           })
         } else {
           None
@@ -242,5 +247,34 @@ impl GitManager {
     // Use update-ref to update branch reference
     self.command("update-ref", &[&format!("refs/heads/{}", branch), target])?;
     Ok(())
+  }
+
+  pub fn get_worktrees(&self) -> Result<std::collections::HashMap<String, String>, Box<dyn std::error::Error>> {
+    let output = match self.command("worktree", &["list", "--porcelain"]) {
+      Ok(output) => output,
+      Err(_) => return Ok(std::collections::HashMap::new()), // No worktrees or git version doesn't support it
+    };
+
+    let mut worktrees = std::collections::HashMap::new();
+    let mut current_worktree = String::new();
+    let mut current_branch = String::new();
+
+    for line in output.lines() {
+      if line.starts_with("worktree ") {
+        current_worktree = line.strip_prefix("worktree ").unwrap_or("").to_string();
+      } else if line.starts_with("branch ") {
+        let branch_ref = line.strip_prefix("branch ").unwrap_or("");
+        if let Some(branch_name) = branch_ref.strip_prefix("refs/heads/") {
+          current_branch = branch_name.to_string();
+        }
+      }
+
+      if !current_worktree.is_empty() && !current_branch.is_empty() {
+        worktrees.insert(current_branch.clone(), current_worktree.clone());
+        current_branch.clear();
+      }
+    }
+
+    Ok(worktrees)
   }
 }
