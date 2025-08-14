@@ -2,20 +2,10 @@
 
 ## Install
 
-Since version 1.0.0, swagit has been rewritten in Rust, so you can install it directly via cargo.
+Swagit is written in Rust and distributed via crates.io.
 
 ```bash
 cargo install swagit
-```
-
-### npm（legacy）
-
-The npm version wraps the binary with JavaScript, so it will be slower than the crates version.
-
-```bash
-npm install -g swagit
-pnpm add -g swagit
-yarn global add swagit
 ```
 
 ## Usage
@@ -42,9 +32,12 @@ Enter an interactive mode to select branches to be deleted.
 
 <img src="https://i.imgur.com/8Vk1yqS.gif" width="800">
 
-#### `--sync` or `-s` (alpha test)
+#### `--sync` or `-s`
 
-Sync all branches and delete merged branches.
+Sync with remote and clean up merged branches. This command:
+- Syncs current branch with remote (fast-forward only)
+- Updates remote references
+- Deletes merged branches automatically
 
 ## License
 
