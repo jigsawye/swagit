@@ -115,6 +115,7 @@ impl GitManager {
           && branch != &default_branch
           && branch != "master"
           && branch != "main"
+          && branch != &current
           && !branch.starts_with('*')
         {
           Some(branch.to_string())
