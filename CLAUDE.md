@@ -46,15 +46,6 @@ cargo fmt
 cargo clippy
 ```
 
-### Package Management (Legacy npm wrapper)
-```bash
-# Install dependencies for npm wrapper
-pnpm install
-
-# Publish changeset (for releases)
-pnpm changeset
-pnpm release
-```
 
 ## Key Implementation Details
 
@@ -71,8 +62,8 @@ The sync functionality (`sync_branches()` in GitManager) performs a complex work
 - Handles both interactive (TTY) and non-interactive modes
 - Graceful Ctrl-C handling with proper cursor cleanup
 
-### Cross-Platform Distribution
-The project uses a multi-package structure under `packages/` for platform-specific npm distributions while the main Rust binary is distributed via crates.io.
+### Distribution
+The project is distributed as a Rust binary via crates.io.
 
 ## Common Patterns
 
